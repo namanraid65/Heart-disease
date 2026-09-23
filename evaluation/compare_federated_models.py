@@ -12,11 +12,9 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from typing import Dict, Any
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 import torch
 
 from federated.config import (
@@ -29,8 +27,6 @@ from federated.config import (
 )
 from federated.evaluate_global import evaluate_global_model_on_all_clients
 from federated.evaluate_global_resnet import evaluate_global_resnet_all_clients
-from models.alexnet_1d import build_alexnet_1d
-from models.resnet_1d import build_resnet_1d
 
 
 def run_federated_model_comparison() -> pd.DataFrame:

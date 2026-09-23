@@ -15,7 +15,6 @@ if str(PROJECT_ROOT) not in sys.path:
 
 import torch
 import torch.nn as nn
-from typing import Optional
 
 
 class ResidualBlock1D(nn.Module):

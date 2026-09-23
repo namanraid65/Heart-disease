@@ -15,7 +15,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from typing import Dict, List, Any, Tuple, Optional, Union
+from typing import Dict, List, Any, Tuple, Optional
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -23,13 +23,12 @@ import shap
 
 from xai.config import (
     PROCESSED_FEATURE_NAMES,
-    NUM_PROCESSED_FEATURES,
     FEATURE_DISPLAY_NAMES,
     SHAP_FIGURES_DIR,
     RANDOM_SEED
 )
 from models.xgboost_model import LocalXGBoostModel
-from xai.model_loader import SampleWeightedXGBoostEnsemble, FederatedXGBoostModel
+from xai.model_loader import SampleWeightedXGBoostEnsemble
 
 
 class LocalXGBoostTreeExplainer:

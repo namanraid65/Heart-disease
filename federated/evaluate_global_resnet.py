@@ -14,7 +14,6 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from typing import Dict, Any, Union, Optional
 import numpy as np
-import pandas as pd
 import torch
 import torch.nn as nn
 from sklearn.metrics import (
@@ -34,7 +33,7 @@ from federated.config import (
     DEVICE
 )
 from federated.utils import get_model_bn_state, set_model_bn_state
-from models.resnet_1d import ResNet1D, build_resnet_1d
+from models.resnet_1d import build_resnet_1d
 from models.dataset import get_client_dataloaders
 
 

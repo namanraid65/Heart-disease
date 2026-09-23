@@ -30,15 +30,13 @@ from federated.config import (
     FEDERATED_CLIENTS
 )
 from federated.utils import (
-    get_model_parameters,
-    set_model_parameters,
     get_model_shared_parameters,
     set_model_shared_parameters,
     get_model_bn_state,
     set_model_bn_state,
     verify_privacy_and_data_locality
 )
-from models.resnet_1d import ResNet1D, build_resnet_1d
+from models.resnet_1d import build_resnet_1d
 from models.dataset import get_client_dataloaders
 
 

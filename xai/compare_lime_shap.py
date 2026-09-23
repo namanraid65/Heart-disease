@@ -11,9 +11,8 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from typing import Dict, List, Any, Set, Tuple
+from typing import Dict, List, Any, Tuple
 import numpy as np
-import pandas as pd
 
 from xai.config import TOP_K_FEATURES
 

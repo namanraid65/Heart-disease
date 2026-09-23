@@ -12,7 +12,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from typing import Dict, Any, Tuple
+from typing import Dict, Any
 import numpy as np
 import pandas as pd
 import torch
@@ -33,7 +33,7 @@ from models.config import (
     RESNET_FIGURES_DIR,
     DEVICE
 )
-from models.resnet_1d import ResNet1D, build_resnet_1d
+from models.resnet_1d import build_resnet_1d
 from models.dataset import get_client_dataloaders
 
 

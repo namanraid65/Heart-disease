@@ -16,7 +16,6 @@ from typing import Dict, List, Any, Tuple, Optional
 from collections import OrderedDict
 import numpy as np
 import torch
-import torch.nn as nn
 
 from models.heterogeneous.predictor import SharedPredictor
 from federated.heterogeneous.config import (

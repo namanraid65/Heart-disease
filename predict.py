@@ -30,22 +30,10 @@ if hasattr(sys.stdout, 'reconfigure'):
         pass
 
 import argparse
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 import numpy as np
 import pandas as pd
-import joblib
 
-from preprocessing.feature_schema import (
-    RAW_FEATURE_NAMES,
-    INPUT_FEATURES,
-    CONTINUOUS_FEATURES,
-    BINARY_FEATURES,
-    CATEGORICAL_FEATURES,
-    CATEGORICAL_CATEGORIES,
-    CLINICAL_FALLBACKS,
-    PROCESSED_FEATURE_NAMES,
-    NUM_PROCESSED_FEATURES
-)
 from preprocessing.preprocess_client import ClientPreprocessor, load_client_preprocessor
 from xai.model_loader import load_federated_model
 

@@ -14,7 +14,6 @@ if str(PROJECT_ROOT) not in sys.path:
 from typing import Dict, List, Any, Tuple, Optional
 import numpy as np
 import torch
-import torch.nn as nn
 
 from federated.config import (
     FEDERATED_RESNET_CHECKPOINTS_DIR,
@@ -24,14 +23,11 @@ from federated.config import (
     RANDOM_SEED
 )
 from federated.utils import (
-    get_model_parameters,
-    set_model_parameters,
     get_model_shared_parameters,
-    set_model_shared_parameters,
-    verify_privacy_and_data_locality
+    set_model_shared_parameters
 )
 from federated.strategy import FedAvgStrategy
-from models.resnet_1d import ResNet1D, build_resnet_1d
+from models.resnet_1d import build_resnet_1d
 
 
 class FederatedResNetServer:

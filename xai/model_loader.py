@@ -16,7 +16,6 @@ import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
-from xgboost import XGBClassifier
 
 from xai.config import (
     ALEXNET_CKPT_PATH,
@@ -29,8 +28,8 @@ from xai.config import (
 from models.config import PROCESSED_DATA_DIR
 from preprocessing.feature_schema import INPUT_FEATURES
 from preprocessing.preprocess_client import load_client_preprocessor
-from models.alexnet_1d import build_alexnet_1d, AlexNet1D
-from models.resnet_1d import build_resnet_1d, ResNet1D
+from models.alexnet_1d import build_alexnet_1d
+from models.resnet_1d import build_resnet_1d
 from models.xgboost_model import build_xgboost_model, LocalXGBoostModel
 
 

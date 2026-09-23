@@ -7,7 +7,6 @@ followed by a 3-layer fully connected classification head with dropout.
 
 import torch
 import torch.nn as nn
-from typing import Optional
 
 
 class AlexNet1D(nn.Module):

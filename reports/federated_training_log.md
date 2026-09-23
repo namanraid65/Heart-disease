@@ -16,7 +16,7 @@ This document logs the multi-round communication telemetry for the Federated 1D 
 
 | Round    | Participating Clients   |   Total Training Samples | Macro Val Acc   | Macro Val Recall   |   Macro Val F1 |   Macro Val ROC-AUC | H1 / H2 / H3 Val F1   | Elapsed   |
 |:---------|:------------------------|-------------------------:|:----------------|:-------------------|---------------:|--------------------:|:----------------------|:----------|
-| Round 01 | 3/3 (100%)              |                      503 | 72.64%          | 96.33%             |         0.7703 |              0.6411 | 0.727 / 0.612 / 0.971 | 1.00s     |
+| Round 01 | 3/3 (100%)              |                      503 | 72.64%          | 96.33%             |         0.7703 |              0.6411 | 0.727 / 0.612 / 0.971 | 0.87s     |
 | Round 02 | 3/3 (100%)              |                      503 | 60.27%          | 59.58%             |         0.6019 |              0.7336 | 0.783 / 0.812 / 0.211 | 0.48s     |
 
 ---

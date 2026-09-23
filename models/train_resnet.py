@@ -26,7 +26,6 @@ from models.config import (
     CHECKPOINTS_DIR,
     RANDOM_SEED,
     DEVICE,
-    INPUT_FEATURES,
     DROPOUT_RATE,
     LEARNING_RATE,
     WEIGHT_DECAY,
@@ -35,7 +34,7 @@ from models.config import (
     EARLY_STOPPING_PATIENCE,
     MIN_DELTA
 )
-from models.resnet_1d import ResNet1D, build_resnet_1d
+from models.resnet_1d import build_resnet_1d
 from models.dataset import get_client_dataloaders
 
 

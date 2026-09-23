@@ -12,9 +12,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-import json
-from typing import Dict, Any, Tuple
-import numpy as np
+from typing import Dict, Tuple
 import pandas as pd
 from sklearn.metrics import accuracy_score, roc_auc_score, f1_score
 
@@ -22,12 +20,9 @@ from models.config import (
     CLIENT_CONFIGS,
     CHECKPOINTS_DIR,
     PROCESSED_DATA_DIR,
-    RANDOM_SEED,
-    XGBOOST_PARAMS,
-    INPUT_FEATURES
+    RANDOM_SEED
 )
-from models.xgboost_model import LocalXGBoostModel, build_xgboost_model
-from preprocessing.feature_schema import PROCESSED_FEATURE_NAMES
+from models.xgboost_model import build_xgboost_model
 
 
 def load_client_tabular_data(client_id: str) -> Dict[str, Tuple[pd.DataFrame, pd.Series]]:

@@ -14,11 +14,10 @@ if str(PROJECT_ROOT) not in sys.path:
 
 import time
 from datetime import datetime, timezone
-from typing import Dict, List, Any, Tuple
+from typing import Dict, List, Any
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 from xai.config import (
     MODELS_TO_EXPLAIN,
@@ -30,16 +29,14 @@ from xai.config import (
     LIME_FIGURES_DIR,
     SHAP_FIGURES_DIR,
     REPORTS_DIR,
-    ENVIRONMENT_METADATA,
     MEDICAL_SAFETY_STATEMENT,
     RANDOM_SEED
 )
 from xai.model_loader import load_federated_model
 from xai.lime_explainer import LimeTabularExplainerWrapper
 from xai.shap_explainer import DeepLearningShapExplainer
-from xai.shap_xgboost import SampleWeightedXGBoostShapExplainer, FederatedXGBoostShapExplainer
+from xai.shap_xgboost import SampleWeightedXGBoostShapExplainer
 from xai.compare_lime_shap import compute_explanation_agreement, format_feature_list
-from models.dataset import get_client_dataloaders
 
 
 def select_representative_samples(
