@@ -1,0 +1,14 @@
+{
+  "experiment_id": "local_alexnet",
+  "seed": 2026,
+  "code_version": "7f33aabfda6a2edf",
+  "shared_parameters": 120257,
+  "private_parameters": 0,
+  "bytes_per_round": 0,
+  "secure_aggregation": false,
+  "differential_privacy": false,
+  "epsilon": null,
+  "best_round": 4,
+  "selection_metric": "val_loss",
+  "execution_duration_sec": 11.867699146270752
+}

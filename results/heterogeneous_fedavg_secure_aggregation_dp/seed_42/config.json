@@ -1,0 +1,14 @@
+{
+  "experiment_id": "heterogeneous_fedavg_secure_aggregation_dp",
+  "seed": 42,
+  "code_version": "7f33aabfda6a2edf",
+  "shared_parameters": 1089,
+  "private_parameters": 3744,
+  "bytes_per_round": 26136,
+  "secure_aggregation": true,
+  "differential_privacy": true,
+  "epsilon": 148.02585092994047,
+  "best_round": 9,
+  "selection_metric": "val_macro_roc_auc",
+  "execution_duration_sec": 3.7822186946868896
+}

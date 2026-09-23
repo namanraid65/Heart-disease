@@ -1,0 +1,8 @@
+{
+  "paths": {
+    "hospital_1": "E:\\Heart-disease-main\\models\\checkpoints\\hospital_1_alexnet_seed_123.pt",
+    "hospital_2": "E:\\Heart-disease-main\\models\\checkpoints\\hospital_2_alexnet_seed_123.pt",
+    "hospital_3": "E:\\Heart-disease-main\\models\\checkpoints\\hospital_3_alexnet_seed_123.pt"
+  },
+  "verified": true
+}

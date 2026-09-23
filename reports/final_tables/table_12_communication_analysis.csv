@@ -1,0 +1,6 @@
+Architecture,Shared Params,Private Params,Bytes/Round,Total (15 Rounds),Comm Reduction vs AlexNet
+Homogeneous 1D AlexNet,"120,257",0,"2,886,168 B (2.75 MB)",41.29 MB,0.0%
+Homogeneous 1D ResNet,"68,225",0,"1,637,400 B (1.56 MB)",23.42 MB,43.3%
+Heterogeneous Composite (Z=32),"4,385","3,744","105,240 B (102.8 KB)",1.51 MB,96.3%
+Heterogeneous Composite (Z=16),"3,297","2,688","79,128 B (77.3 KB)",1.13 MB,97.3%
+Heterogeneous Composite (Z=8),"2,753","2,160","66,072 B (64.5 KB)",0.95 MB,97.7%

@@ -1,0 +1,14 @@
+{
+  "experiment_id": "heterogeneous_latent_dim_32",
+  "seed": 2026,
+  "code_version": "7f33aabfda6a2edf",
+  "shared_parameters": 1089,
+  "private_parameters": 3744,
+  "bytes_per_round": 26136,
+  "secure_aggregation": false,
+  "differential_privacy": false,
+  "epsilon": null,
+  "best_round": 2,
+  "selection_metric": "val_macro_roc_auc",
+  "execution_duration_sec": 3.7512757778167725
+}

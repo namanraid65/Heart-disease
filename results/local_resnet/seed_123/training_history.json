@@ -1,0 +1,4 @@
+{
+  "best_round": 6,
+  "selection_metric": "val_loss"
+}

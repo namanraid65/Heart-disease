@@ -1,0 +1,5 @@
+Institution,Geography,Total N,Train (70%),Val (15%),Test (15%),Pos / Neg (Test),Prevalence
+Hospital 1 (Cleveland),USA,303,212,45,46,21 / 25,45.9%
+Hospital 2 (Hungarian),Hungary,293,205,44,44,16 / 28,36.1%
+Hospital 3 (Switzerland),Switzerland,123,86,18,19,18 / 1,93.5%
+Combined Multi-Center,Global,719,503,107,109,55 / 54,50.8%

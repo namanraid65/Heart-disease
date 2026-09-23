@@ -1,0 +1,14 @@
+{
+  "experiment_id": "heterogeneous_encoder_2layer",
+  "seed": 42,
+  "code_version": "7f33aabfda6a2edf",
+  "shared_parameters": 1089,
+  "private_parameters": 3744,
+  "bytes_per_round": 26136,
+  "secure_aggregation": false,
+  "differential_privacy": false,
+  "epsilon": null,
+  "best_round": 15,
+  "selection_metric": "val_macro_roc_auc",
+  "execution_duration_sec": 3.6757700443267822
+}

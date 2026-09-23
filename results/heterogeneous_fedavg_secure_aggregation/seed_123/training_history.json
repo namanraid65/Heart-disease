@@ -1,0 +1,4 @@
+{
+  "best_round": 12,
+  "selection_metric": "val_macro_roc_auc"
+}

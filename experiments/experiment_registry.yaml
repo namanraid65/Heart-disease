@@ -1,0 +1,529 @@
+version: 1.0.0
+registry_date: '2026-09-23'
+framework_version: PyTorch 2.10.0+cpu, scikit-learn 1.7.2, Flower 1.25.0
+split_manifest: data/split_manifest.json
+experiments:
+- experiment_id: local_alexnet
+  description: Local 1D AlexNet trained independently per hospital silo with validation
+    early stopping.
+  model_family: 1D_AlexNet
+  training_type: local
+  feature_setting: homogeneous_25
+  federated_strategy: null
+  privacy_setting: none
+  latent_dimension: null
+  num_rounds: 0
+  local_epochs: 100
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/hospital_{client_id}_alexnet.pt
+  results_path: reports/federated_alexnet_comparison.md
+  status: completed
+- experiment_id: local_resnet
+  description: Local 1D ResNet trained independently per hospital silo with validation
+    early stopping.
+  model_family: 1D_ResNet
+  training_type: local
+  feature_setting: homogeneous_25
+  federated_strategy: null
+  privacy_setting: none
+  latent_dimension: null
+  num_rounds: 0
+  local_epochs: 100
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/hospital_{client_id}_resnet.pt
+  results_path: reports/federated_resnet_comparison.md
+  status: completed
+- experiment_id: local_xgboost
+  description: Local XGBoost models trained on hospital silos (NOT federated boosting;
+    local probability averaging).
+  model_family: XGBoost
+  training_type: local
+  feature_setting: homogeneous_25
+  federated_strategy: null
+  privacy_setting: none
+  latent_dimension: null
+  num_rounds: 0
+  local_epochs: 100
+  batch_size: null
+  learning_rate: 0.05
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/{client_id}_xgboost.json
+  results_path: reports/xgboost_summary.md
+  status: completed
+- experiment_id: local_mlp
+  description: Local MLP classifier trained independently per hospital using local
+    encoder + head without federation.
+  model_family: MLP
+  training_type: local
+  feature_setting: heterogeneous_native
+  federated_strategy: null
+  privacy_setting: none
+  latent_dimension: 32
+  num_rounds: 0
+  local_epochs: 50
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/{client_id}_local_mlp.pt
+  results_path: results/local_mlp_results.json
+  status: completed
+- experiment_id: homogeneous_fedavg_alexnet
+  description: Homogeneous FedAvg using 1D AlexNet with local FedBN tracking across
+    3 hospital sites.
+  model_family: 1D_AlexNet
+  training_type: federated
+  feature_setting: homogeneous_25
+  federated_strategy: FedAvg
+  privacy_setting: none
+  latent_dimension: null
+  num_rounds: 15
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/federated_alexnet/global_alexnet_final.pt
+  results_path: reports/federated_alexnet_report.md
+  status: completed
+- experiment_id: homogeneous_fedavg_resnet
+  description: Homogeneous FedAvg using 1D ResNet with residual blocks and local FedBN
+    tracking across 3 hospital sites.
+  model_family: 1D_ResNet
+  training_type: federated
+  feature_setting: homogeneous_25
+  federated_strategy: FedAvg
+  privacy_setting: none
+  latent_dimension: null
+  num_rounds: 15
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/federated_resnet/global_resnet_final.pt
+  results_path: reports/federated_resnet_report.md
+  status: completed
+- experiment_id: heterogeneous_fedavg_mlp
+  description: 'Heterogeneous FedAvg: Hospital-specific encoders (D_i -> Z=32) + shared
+    federated predictor (Z -> 1).'
+  model_family: HeterogeneousComposite_MLP
+  training_type: federated
+  feature_setting: heterogeneous_native
+  federated_strategy: HeterogeneousFedAvg
+  privacy_setting: none
+  latent_dimension: 32
+  num_rounds: 15
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/federated_heterogeneous/global_heterogeneous_fedavg_predictor_final.pt
+  results_path: reports/federated_heterogeneous_fedavg_report.md
+  status: completed
+- experiment_id: heterogeneous_fedprox_mlp_mu_001
+  description: 'Heterogeneous FedProx (mu=0.01): Proximal regularization applied strictly
+    to shared predictor.'
+  model_family: HeterogeneousComposite_MLP
+  training_type: federated
+  feature_setting: heterogeneous_native
+  federated_strategy: HeterogeneousFedProx
+  privacy_setting: none
+  latent_dimension: 32
+  num_rounds: 15
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/federated_heterogeneous/global_heterogeneousfedprox_predictor_final.pt
+  results_path: reports/federated_optimization_comparison.md
+  status: completed
+- experiment_id: heterogeneous_fedprox_mlp_mu_0001
+  description: Heterogeneous FedProx (mu=0.001) ablation on shared predictor drift
+    constraint.
+  model_family: HeterogeneousComposite_MLP
+  training_type: federated
+  feature_setting: heterogeneous_native
+  federated_strategy: HeterogeneousFedProx
+  privacy_setting: none
+  latent_dimension: 32
+  num_rounds: 15
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/federated_heterogeneous/global_heterogeneous_fedprox_mu_0001_final.pt
+  results_path: results/heterogeneous_fedprox_mu_0001_results.json
+  status: completed
+- experiment_id: heterogeneous_fedprox_mlp_mu_01
+  description: Heterogeneous FedProx (mu=0.1) ablation on shared predictor drift constraint.
+  model_family: HeterogeneousComposite_MLP
+  training_type: federated
+  feature_setting: heterogeneous_native
+  federated_strategy: HeterogeneousFedProx
+  privacy_setting: none
+  latent_dimension: 32
+  num_rounds: 15
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/federated_heterogeneous/global_heterogeneous_fedprox_mu_01_final.pt
+  results_path: results/heterogeneous_fedprox_mu_01_results.json
+  status: completed
+- experiment_id: heterogeneous_fedadam_mlp
+  description: 'Heterogeneous FedAdam: Server-side adaptive Adam optimizer on shared
+    predictor pseudo-gradients (eta=0.1, beta1=0.9, beta2=0.99, tau=1e-3).'
+  model_family: HeterogeneousComposite_MLP
+  training_type: federated
+  feature_setting: heterogeneous_native
+  federated_strategy: HeterogeneousFedAdam
+  privacy_setting: none
+  latent_dimension: 32
+  num_rounds: 15
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/federated_heterogeneous/global_heterogeneousfedadam_predictor_final.pt
+  results_path: reports/federated_optimization_comparison.md
+  status: completed
+- experiment_id: heterogeneous_fedavg_secure_aggregation
+  description: Heterogeneous FedAvg with simulated pairwise additive zero-sum masking
+    (sum M_i = 0) on shared predictor.
+  model_family: HeterogeneousComposite_MLP
+  training_type: federated
+  feature_setting: heterogeneous_native
+  federated_strategy: HeterogeneousFedAvg
+  privacy_setting: secure_aggregation_only
+  latent_dimension: 32
+  num_rounds: 15
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/federated_heterogeneous/global_heterogeneous_fedavg_secure_predictor_final.pt
+  results_path: reports/federated_privacy_security_report.md
+  status: completed
+- experiment_id: heterogeneous_fedavg_dp
+  description: Heterogeneous FedAvg with client-side DP on shared predictor (C=1.0,
+    sigma=0.3, target delta=1e-5, formal RDP accountant).
+  model_family: HeterogeneousComposite_MLP
+  training_type: federated
+  feature_setting: heterogeneous_native
+  federated_strategy: HeterogeneousFedAvg
+  privacy_setting: dp_only
+  latent_dimension: 32
+  num_rounds: 15
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/federated_heterogeneous/global_heterogeneous_fedavg_dp_predictor_final.pt
+  results_path: reports/federated_privacy_security_report.md
+  status: completed
+- experiment_id: heterogeneous_fedavg_secure_aggregation_dp
+  description: Heterogeneous FedAvg with joint simulated secure aggregation and client-side
+    DP (C=1.0, sigma=0.3, delta=1e-5).
+  model_family: HeterogeneousComposite_MLP
+  training_type: federated
+  feature_setting: heterogeneous_native
+  federated_strategy: HeterogeneousFedAvg
+  privacy_setting: secure_aggregation_and_dp
+  latent_dimension: 32
+  num_rounds: 15
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/federated_heterogeneous/global_heterogeneous_fedavg_secure_dp_predictor_final.pt
+  results_path: reports/federated_privacy_security_report.md
+  status: completed
+- experiment_id: heterogeneous_fedprox_secure_aggregation_dp
+  description: Heterogeneous FedProx (mu=0.01) with joint simulated secure aggregation
+    and client-side DP.
+  model_family: HeterogeneousComposite_MLP
+  training_type: federated
+  feature_setting: heterogeneous_native
+  federated_strategy: HeterogeneousFedProx
+  privacy_setting: secure_aggregation_and_dp
+  latent_dimension: 32
+  num_rounds: 15
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/federated_heterogeneous/global_heterogeneous_fedprox_secure_dp_predictor_final.pt
+  results_path: reports/federated_privacy_security_report.md
+  status: completed
+- experiment_id: heterogeneous_fedadam_secure_aggregation_dp
+  description: Heterogeneous FedAdam (eta=0.1) with joint simulated secure aggregation
+    and client-side DP.
+  model_family: HeterogeneousComposite_MLP
+  training_type: federated
+  feature_setting: heterogeneous_native
+  federated_strategy: HeterogeneousFedAdam
+  privacy_setting: secure_aggregation_and_dp
+  latent_dimension: 32
+  num_rounds: 15
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/federated_heterogeneous/global_heterogeneous_fedadam_secure_dp_predictor_final.pt
+  results_path: reports/federated_privacy_security_report.md
+  status: completed
+- experiment_id: heterogeneous_latent_dim_8
+  description: Heterogeneous FedAvg ablation with compact latent bottleneck dimension
+    Z=8.
+  model_family: HeterogeneousComposite_MLP
+  training_type: federated
+  feature_setting: heterogeneous_native
+  federated_strategy: HeterogeneousFedAvg
+  privacy_setting: none
+  latent_dimension: 8
+  num_rounds: 15
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/federated_heterogeneous/global_heterogeneous_z8_final.pt
+  results_path: results/heterogeneous_z8_results.json
+  status: completed
+- experiment_id: heterogeneous_latent_dim_16
+  description: Heterogeneous FedAvg ablation with mid-range latent bottleneck dimension
+    Z=16.
+  model_family: HeterogeneousComposite_MLP
+  training_type: federated
+  feature_setting: heterogeneous_native
+  federated_strategy: HeterogeneousFedAvg
+  privacy_setting: none
+  latent_dimension: 16
+  num_rounds: 15
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/federated_heterogeneous/global_heterogeneous_z16_final.pt
+  results_path: results/heterogeneous_z16_results.json
+  status: completed
+- experiment_id: heterogeneous_latent_dim_32
+  description: Heterogeneous FedAvg baseline with standard latent bottleneck dimension
+    Z=32 (reference setting).
+  model_family: HeterogeneousComposite_MLP
+  training_type: federated
+  feature_setting: heterogeneous_native
+  federated_strategy: HeterogeneousFedAvg
+  privacy_setting: none
+  latent_dimension: 32
+  num_rounds: 15
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/federated_heterogeneous/global_heterogeneous_fedavg_predictor_final.pt
+  results_path: reports/federated_heterogeneous_fedavg_report.md
+  status: completed
+- experiment_id: heterogeneous_encoder_1layer
+  description: Heterogeneous FedAvg with 1-layer linear projection encoder per hospital
+    silo (D_i -> Z).
+  model_family: HeterogeneousComposite_MLP
+  training_type: federated
+  feature_setting: heterogeneous_native
+  federated_strategy: HeterogeneousFedAvg
+  privacy_setting: none
+  latent_dimension: 32
+  num_rounds: 15
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/federated_heterogeneous/global_heterogeneous_enc1layer_final.pt
+  results_path: results/heterogeneous_enc1layer_results.json
+  status: completed
+- experiment_id: heterogeneous_encoder_2layer
+  description: Heterogeneous FedAvg with 2-layer non-linear MLP encoder per hospital
+    silo (D_i -> 64 -> Z) [reference setting].
+  model_family: HeterogeneousComposite_MLP
+  training_type: federated
+  feature_setting: heterogeneous_native
+  federated_strategy: HeterogeneousFedAvg
+  privacy_setting: none
+  latent_dimension: 32
+  num_rounds: 15
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  seed: 42
+  client_count: 3
+  client_ids:
+  - hospital_1
+  - hospital_2
+  - hospital_3
+  dataset_version: UCI_Heart_Disease_v1
+  preprocessing_version: median_impute_std_scale_v1
+  evaluation_protocol_version: val_selection_test_eval_v1
+  checkpoint_path: models/checkpoints/federated_heterogeneous/global_heterogeneous_fedavg_predictor_final.pt
+  results_path: reports/federated_heterogeneous_fedavg_report.md
+  status: completed

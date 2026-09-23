@@ -1,0 +1,4 @@
+{
+  "selection_metric": "val_logloss",
+  "best_round": 87
+}

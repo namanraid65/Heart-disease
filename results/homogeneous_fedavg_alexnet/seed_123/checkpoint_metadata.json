@@ -1,0 +1,6 @@
+{
+  "paths": {
+    "global": "E:\\Heart-disease-main\\models\\checkpoints\\federated_alexnet\\global_alexnet_final.pt"
+  },
+  "verified": true
+}

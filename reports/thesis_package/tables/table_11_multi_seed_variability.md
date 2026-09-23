@@ -1,0 +1,17 @@
+| Experiment ID                    | Metric   |   Mean |   Std Dev | 95% CI   |   N Seeds |
+|:---------------------------------|:---------|-------:|----------:|:---------|----------:|
+| local_xgboost                    | accuracy | 0.8508 |    0.0045 | ±0.0051  |         3 |
+| local_xgboost                    | roc_auc  | 0.8159 |    0.0047 | ±0.0054  |         3 |
+| local_xgboost                    | f1       | 0.8521 |    0.0034 | ±0.0039  |         3 |
+| homogeneous_fedavg_resnet        | accuracy | 0.709  |    0      | ±0.0000  |         3 |
+| homogeneous_fedavg_resnet        | roc_auc  | 0.6785 |    0      | ±0.0000  |         3 |
+| homogeneous_fedavg_resnet        | f1       | 0.7438 |    0      | ±0.0000  |         3 |
+| heterogeneous_fedavg_mlp         | accuracy | 0.8568 |    0.0104 | ±0.0117  |         3 |
+| heterogeneous_fedavg_mlp         | roc_auc  | 0.6742 |    0.0498 | ±0.0564  |         3 |
+| heterogeneous_fedavg_mlp         | f1       | 0.8399 |    0.0309 | ±0.0349  |         3 |
+| heterogeneous_fedprox_mlp_mu_001 | accuracy | 0.8617 |    0.0136 | ±0.0154  |         3 |
+| heterogeneous_fedprox_mlp_mu_001 | roc_auc  | 0.6772 |    0.0524 | ±0.0593  |         3 |
+| heterogeneous_fedprox_mlp_mu_001 | f1       | 0.8447 |    0.0348 | ±0.0394  |         3 |
+| heterogeneous_fedadam_mlp        | accuracy | 0.8567 |    0.016  | ±0.0181  |         3 |
+| heterogeneous_fedadam_mlp        | roc_auc  | 0.6703 |    0.0454 | ±0.0514  |         3 |
+| heterogeneous_fedadam_mlp        | f1       | 0.8406 |    0.0157 | ±0.0177  |         3 |

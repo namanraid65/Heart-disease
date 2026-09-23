@@ -1,0 +1,4 @@
+Configuration,Macro Acc,Weighted Acc,Macro ROC-AUC,Weighted ROC-AUC,Macro F1,Brier Score
+heterogeneous_fedavg_mlp,85.7 ± 1.0%,84.4 ± 1.8%,0.6742 ± 0.0498,0.7934 ± 0.0258,0.8399 ± 0.0309,0.1070 ± 0.0071
+heterogeneous_fedadam_mlp,85.7 ± 1.6%,84.4 ± 1.8%,0.6703 ± 0.0454,0.7864 ± 0.0194,0.8406 ± 0.0157,0.1163 ± 0.0227
+heterogeneous_fedadam_secure_aggregation_dp,84.6 ± 1.0%,82.6 ± 1.8%,0.7283 ± 0.0221,0.8209 ± 0.0093,0.8431 ± 0.0159,0.1140 ± 0.0037

@@ -1,0 +1,6 @@
+{
+  "paths": {
+    "global": "E:\\Heart-disease-main\\models\\checkpoints\\federated_resnet\\global_resnet_final.pt"
+  },
+  "verified": true
+}

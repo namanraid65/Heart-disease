@@ -1,0 +1,129 @@
+{
+  "manifest_version": "1.0.0",
+  "created_date": "2026-09-23",
+  "seed": 42,
+  "description": "Frozen, immutable train/validation/test split manifest across participating hospital silos.",
+  "hospitals": {
+    "hospital_1": {
+      "name": "Cleveland Clinic Foundation",
+      "source_dataset": "dataset/hospital_1/processed.cleveland.data",
+      "splits": {
+        "train": {
+          "num_samples": 212,
+          "positive_count": 97,
+          "negative_count": 115,
+          "positive_ratio": 0.45754716981132076,
+          "features_count": 25,
+          "x_file": "data/processed/hospital_1/train/X_train.csv",
+          "y_file": "data/processed/hospital_1/train/y_train.csv",
+          "x_sha256": "e7f2c815f135b4933966d943a7bf3f583a602952f30d81a8be3f240de2399af7",
+          "y_sha256": "dc0a68921b7c8918d92f2a11bc52b3c997e231bf3af39b443d8d0a9fd9853961"
+        },
+        "validation": {
+          "num_samples": 45,
+          "positive_count": 21,
+          "negative_count": 24,
+          "positive_ratio": 0.4666666666666667,
+          "features_count": 25,
+          "x_file": "data/processed/hospital_1/validation/X_val.csv",
+          "y_file": "data/processed/hospital_1/validation/y_val.csv",
+          "x_sha256": "032cc7306103533fd64a219864bb9ec8a58597d9a4915ab765499deef0e7fc9e",
+          "y_sha256": "31496ff40fbfd371db196d4ddfce5e373dadcfb993c0f51af7785a6f2efc6ece"
+        },
+        "test": {
+          "num_samples": 46,
+          "positive_count": 21,
+          "negative_count": 25,
+          "positive_ratio": 0.45652173913043476,
+          "features_count": 25,
+          "x_file": "data/processed/hospital_1/test/X_test.csv",
+          "y_file": "data/processed/hospital_1/test/y_test.csv",
+          "x_sha256": "2af770d52e3cd8c826aa38b1dac680b3f5a05b063a847eca6612d49e47a26353",
+          "y_sha256": "c9ec979c93f963cb193d15fac700ea4f74dcfa9fda2adccd7d044d558dbf65aa"
+        }
+      },
+      "total_samples": 303
+    },
+    "hospital_2": {
+      "name": "Hungarian Institute of Cardiology",
+      "source_dataset": "dataset/hospital_2/processed.hungarian.data",
+      "splits": {
+        "train": {
+          "num_samples": 205,
+          "positive_count": 74,
+          "negative_count": 131,
+          "positive_ratio": 0.36097560975609755,
+          "features_count": 25,
+          "x_file": "data/processed/hospital_2/train/X_train.csv",
+          "y_file": "data/processed/hospital_2/train/y_train.csv",
+          "x_sha256": "ec04669e7200dd11db23f52419cbe54f2b8e85c2193606936d8e3a9b2ca829f3",
+          "y_sha256": "864cbff50fe80aa65e4d340763c672db2ca46e12382a4ede1d4ac8de933daaef"
+        },
+        "validation": {
+          "num_samples": 44,
+          "positive_count": 16,
+          "negative_count": 28,
+          "positive_ratio": 0.36363636363636365,
+          "features_count": 25,
+          "x_file": "data/processed/hospital_2/validation/X_val.csv",
+          "y_file": "data/processed/hospital_2/validation/y_val.csv",
+          "x_sha256": "09e98a139d5f9888799e37920216dd2352d3ed378390bea80cf16bd36d7d850f",
+          "y_sha256": "b5adf1306e10ac67a4072197f13ca5aea22e2ce7ae0f322b085bf9a5f2d6574f"
+        },
+        "test": {
+          "num_samples": 44,
+          "positive_count": 16,
+          "negative_count": 28,
+          "positive_ratio": 0.36363636363636365,
+          "features_count": 25,
+          "x_file": "data/processed/hospital_2/test/X_test.csv",
+          "y_file": "data/processed/hospital_2/test/y_test.csv",
+          "x_sha256": "2177e37f45b118bdf2454ff71487f3282e97fc5256364b391007cae9890c2531",
+          "y_sha256": "58c25331b4c1082d00d0713ea942854adce200ac1d0e6468f97ec4254bd11a51"
+        }
+      },
+      "total_samples": 293
+    },
+    "hospital_3": {
+      "name": "University Hospital Zurich / Basel",
+      "source_dataset": "dataset/hospital_3/processed.switzerland.data",
+      "splits": {
+        "train": {
+          "num_samples": 86,
+          "positive_count": 80,
+          "negative_count": 6,
+          "positive_ratio": 0.9302325581395349,
+          "features_count": 25,
+          "x_file": "data/processed/hospital_3/train/X_train.csv",
+          "y_file": "data/processed/hospital_3/train/y_train.csv",
+          "x_sha256": "43ff74607d24b14aa03f1e5d1e927932f00b4d01e1c7b76d8f4245e018640087",
+          "y_sha256": "88f6d052e21fca1a330049ad3c3a9429ba379bad28e8d9fd85a4d3e69fe7cc6b"
+        },
+        "validation": {
+          "num_samples": 18,
+          "positive_count": 17,
+          "negative_count": 1,
+          "positive_ratio": 0.9444444444444444,
+          "features_count": 25,
+          "x_file": "data/processed/hospital_3/validation/X_val.csv",
+          "y_file": "data/processed/hospital_3/validation/y_val.csv",
+          "x_sha256": "6e231c59f8c237b90be39baa0d2f5e7d1b7fc78adf4292ccdf0b795ee04ea336",
+          "y_sha256": "0379f5663b90b8fc478d2065178068183c579699998f3ab6d3c7c0eafddb2180"
+        },
+        "test": {
+          "num_samples": 19,
+          "positive_count": 18,
+          "negative_count": 1,
+          "positive_ratio": 0.9473684210526315,
+          "features_count": 25,
+          "x_file": "data/processed/hospital_3/test/X_test.csv",
+          "y_file": "data/processed/hospital_3/test/y_test.csv",
+          "x_sha256": "605800257b09ee66de92d457433758208c459f3343639be51488c05898f7c0b8",
+          "y_sha256": "9749f4d14980f781acdee73ef1c49331d4f0bb7b26ea2e0b09a67f5f4fcefb98"
+        }
+      },
+      "total_samples": 123
+    }
+  },
+  "total_samples_across_all_hospitals": 719
+}

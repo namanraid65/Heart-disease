@@ -1,0 +1,8 @@
+{
+  "paths": {
+    "hospital_1": "E:\\Heart-disease-main\\models\\checkpoints\\hospital_1_xgboost_seed_42.json",
+    "hospital_2": "E:\\Heart-disease-main\\models\\checkpoints\\hospital_2_xgboost_seed_42.json",
+    "hospital_3": "E:\\Heart-disease-main\\models\\checkpoints\\hospital_3_xgboost_seed_42.json"
+  },
+  "verified": true
+}

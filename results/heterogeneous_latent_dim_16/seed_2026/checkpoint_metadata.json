@@ -1,0 +1,6 @@
+{
+  "paths": {
+    "global": "E:\\Heart-disease-main\\models\\checkpoints\\federated_heterogeneous\\global_heterogeneous_latent_dim_16_s2026_predictor_final.pt"
+  },
+  "verified": true
+}
