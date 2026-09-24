@@ -130,18 +130,26 @@ pytest tests/
 
 ## 🚀 Interactive Clinical CLI Inference
 
-The repository provides an interactive terminal inference utility [`predict.py`](predict.py) allowing clinicians or researchers to evaluate individual patient profiles:
+The repository provides an interactive terminal inference utility [`predict.py`](predict.py) implementing the complete heterogeneous federated inference pipeline (`select hospital -> load schema -> preprocessing -> private encoder -> shared predictor -> probability -> native feature XAI`):
 
 ```bash
-# Interactive guided mode:
+# Interactive guided mode (prompts for hospital-specific clinical features):
 python predict.py
 
-# Direct command-line flag evaluation:
-python predict.py --age 62 --sex 1 --cp 4 --trestbps 145 --chol 270 --fbs 1 --restecg 2 --thalach 125 --exang 1 --oldpeak 2.4 --slope 2 --ca 1 --thal 7
+# Hospital 1 (Cleveland, D1=25) preset demonstration with SHAP explanation:
+python predict.py --demo high_risk --hospital hospital_1
 
-# Preset clinical risk demonstrations:
-python predict.py --demo high_risk
-python predict.py --demo healthy
+# Hospital 2 (Hungarian, D2=25) preset demonstration:
+python predict.py --demo healthy --hospital hospital_2
+
+# Hospital 4 (Extended Biomarkers, D4=30 Synthetic) preset demonstration:
+python predict.py --demo h4_synthetic
+
+# Run with LIME or both explainers:
+python predict.py --demo high_risk --explain both
+
+# Optional legacy baseline comparison (AlexNet, ResNet, XGBoost):
+python predict.py --demo high_risk --legacy-baselines
 ```
 
 ---
@@ -172,27 +180,29 @@ python predict.py --demo healthy
 │   │   └── predictor.py             # Shared global predictor (Z → [0, 1])
 │   └── checkpoints/                 # Saved model weights (.pt / .joblib)
 ├── federated/
-│   ├── client.py / server.py        # FedAvg client/server implementation
+│   ├── client.py / server.py        # Baseline FedAvg client/server implementation
 │   ├── simulation.py                # Multi-round simulation runner (AlexNet)
 │   ├── resnet_simulation.py         # Multi-round simulation runner (ResNet)
-│   ├── heterogeneous_client.py      # Heterogeneous FL client with local encoders
-│   ├── heterogeneous_simulation.py  # Heterogeneous FedAvg simulation runner
-│   ├── optimizers/                  # FedProx and FedAdam implementations
-│   ├── privacy/                     # Pairwise SecAgg & Rényi DP implementations
-│   ├── run_optimization_comparison.py # FedAvg vs FedProx vs FedAdam runner
-│   └── run_privacy_security_experiments.py # SecAgg & DP experiment runner
+│   └── heterogeneous/               # Heterogeneous Feature FL Framework
+│       ├── client.py                # Client with private encoder & synchronized predictor
+│       ├── server.py                # Server maintaining shared predictor
+│       ├── strategy.py              # FedAvg, FedProx, FedAdam, FedYogi, FedAdagrad
+│       ├── simulation.py            # Heterogeneous simulation runner (H1-H4)
+│       ├── privacy.py               # Deterministic SHA-256 Pairwise SecAgg & Rényi DP
+│       ├── evaluate.py              # Per-hospital, macro, and weighted evaluation
+│       └── xai_compat.py            # Local XAI wrapper for native feature attribution
 ├── xai/
-│   ├── lime_explainer.py            # Local surrogate explanations
-│   ├── shap_explainer.py            # Shapley coalition explanations
+│   ├── lime_explainer.py            # Local surrogate explanations (native features)
+│   ├── shap_explainer.py            # Shapley coalition explanations (native features)
 │   └── run_xai_pipeline.py          # Full XAI execution pipeline
 ├── evaluation/
 │   ├── generate_final_evaluation.py # Master evaluation suite generator
 │   └── result_loader.py             # Empirical results consolidator
 ├── reports/                         # Authoritative markdown tables & figures
-├── tests/                           # 84 unit and integration tests (100% passing)
+├── tests/                           # 111 unit and integration tests (100% passing)
 ├── validate_experiments.py          # Automated 6-stage reproducibility audit
 ├── REPRODUCIBILITY.md               # Complete replication manual
-├── predict.py                       # Interactive CLI inference tool
+├── predict.py                       # Heterogeneous interactive CLI inference tool
 └── requirements.txt                 # Pinned dependencies
 ```
 

@@ -60,13 +60,18 @@ def evaluate_heterogeneous_system(
     macro_f1 = float(np.mean([m['f1'] for m in client_metrics.values()]))
     macro_auc = float(np.mean([m['roc_auc'] for m in client_metrics.values()]))
     macro_pr_auc = float(np.mean([m['pr_auc'] for m in client_metrics.values()]))
+    macro_brier = float(np.mean([m.get('brier_score', 0.0) for m in client_metrics.values()]))
 
     # Compute Sample-Weighted Metrics
     weighted_loss = float(sum(m['loss'] * m['num_samples'] for m in client_metrics.values()) / total_samples) if total_samples > 0 else 0.0
     weighted_acc = float(sum(m['accuracy'] * m['num_samples'] for m in client_metrics.values()) / total_samples) if total_samples > 0 else 0.0
+    weighted_prec = float(sum(m['precision'] * m['num_samples'] for m in client_metrics.values()) / total_samples) if total_samples > 0 else 0.0
+    weighted_rec = float(sum(m['recall'] * m['num_samples'] for m in client_metrics.values()) / total_samples) if total_samples > 0 else 0.0
+    weighted_spec = float(sum(m['specificity'] * m['num_samples'] for m in client_metrics.values()) / total_samples) if total_samples > 0 else 0.0
     weighted_f1 = float(sum(m['f1'] * m['num_samples'] for m in client_metrics.values()) / total_samples) if total_samples > 0 else 0.0
     weighted_auc = float(sum(m['roc_auc'] * m['num_samples'] for m in client_metrics.values()) / total_samples) if total_samples > 0 else 0.0
     weighted_pr_auc = float(sum(m['pr_auc'] * m['num_samples'] for m in client_metrics.values()) / total_samples) if total_samples > 0 else 0.0
+    weighted_brier = float(sum(m.get('brier_score', 0.0) * m['num_samples'] for m in client_metrics.values()) / total_samples) if total_samples > 0 else 0.0
 
     return {
         'split': split,
@@ -79,14 +84,19 @@ def evaluate_heterogeneous_system(
             'specificity': macro_spec,
             'f1': macro_f1,
             'roc_auc': macro_auc,
-            'pr_auc': macro_pr_auc
+            'pr_auc': macro_pr_auc,
+            'brier_score': macro_brier
         },
         'weighted_metrics': {
             'loss': weighted_loss,
             'accuracy': weighted_acc,
+            'precision': weighted_prec,
+            'recall': weighted_rec,
+            'specificity': weighted_spec,
             'f1': weighted_f1,
             'roc_auc': weighted_auc,
-            'pr_auc': weighted_pr_auc
+            'pr_auc': weighted_pr_auc,
+            'brier_score': weighted_brier
         },
         'total_samples': total_samples
     }

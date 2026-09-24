@@ -13,6 +13,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from typing import Dict, List, Tuple, Any, Optional
+import hashlib
 import numpy as np
 import torch
 import torch.nn as nn
@@ -109,14 +110,28 @@ class HeterogeneousHospitalClient(fl.client.NumPyClient):
             self.val_loader = custom_loaders.get('val')
             self.test_loader = custom_loaders.get('test')
         else:
-            loaders = get_client_dataloaders(
-                client_id=client_id,
-                batch_size=LOCAL_BATCH_SIZE,
-                shuffle_train=True
-            )
-            self.train_loader = loaders['train']
-            self.val_loader = loaders['val']
-            self.test_loader = loaders['test']
+            try:
+                loaders = get_client_dataloaders(
+                    client_id=client_id,
+                    batch_size=LOCAL_BATCH_SIZE,
+                    shuffle_train=True
+                )
+                self.train_loader = loaders['train']
+                self.val_loader = loaders['val']
+                self.test_loader = loaders['test']
+            except FileNotFoundError as err:
+                if 'synthetic' in client_id.lower():
+                    from torch.utils.data import TensorDataset
+                    print(f" [SYNTHETIC TEST] Initializing synthetic dataloaders for '{client_id}' (D={self.input_dim})")
+                    torch.manual_seed(42)
+                    x_syn = torch.randn(60, self.input_dim)
+                    y_syn = torch.randint(0, 2, (60, 1)).float()
+                    syn_loader = DataLoader(TensorDataset(x_syn, y_syn), batch_size=LOCAL_BATCH_SIZE, shuffle=True)
+                    self.train_loader = syn_loader
+                    self.val_loader = syn_loader
+                    self.test_loader = syn_loader
+                else:
+                    raise err
 
         self.num_train_samples = len(self.train_loader.dataset)
         self.num_val_samples = len(self.val_loader.dataset) if self.val_loader else 0
@@ -238,7 +253,9 @@ class HeterogeneousHospitalClient(fl.client.NumPyClient):
             client_seed = None
             if seed is not None:
                 round_num = config.get('server_round', 1) if config else 1
-                client_seed = (int(seed) + hash(self.client_id) + round_num * 10007) & 0xFFFFFFFF
+                key_str = f"client_dp::{self.client_id}::{seed}::{round_num}"
+                digest = hashlib.sha256(key_str.encode('utf-8')).digest()
+                client_seed = int.from_bytes(digest[:4], byteorder='big')
 
             priv_update, dp_telemetry = clip_and_noise_update(
                 update=raw_update,
@@ -309,10 +326,14 @@ class HeterogeneousHospitalClient(fl.client.NumPyClient):
         rec = float(recall_score(targets_arr, preds_arr, zero_division=0))
         f1 = float(f1_score(targets_arr, preds_arr, zero_division=0))
 
-        # Specificity
+        brier_score = float(np.mean((probs_arr - targets_arr) ** 2)) if len(targets_arr) > 0 else 0.0
+
+        # Specificity & Confusion Matrix with explicit labels [0, 1]
+        cm = confusion_matrix(targets_arr, preds_arr, labels=[0, 1])
+        tn, fp, fn, tp = cm.ravel()
+        spec = float(tn / (tn + fp)) if (tn + fp) > 0 else 0.0
+
         if len(np.unique(targets_arr)) > 1:
-            tn, fp, fn, tp = confusion_matrix(targets_arr, preds_arr).ravel()
-            spec = float(tn / (tn + fp)) if (tn + fp) > 0 else 0.0
             try:
                 auc = float(roc_auc_score(targets_arr, probs_arr))
             except ValueError:
@@ -322,7 +343,6 @@ class HeterogeneousHospitalClient(fl.client.NumPyClient):
             except ValueError:
                 pr_auc = 0.5
         else:
-            spec = 0.0
             auc = 0.5
             pr_auc = 0.5
 
@@ -335,6 +355,13 @@ class HeterogeneousHospitalClient(fl.client.NumPyClient):
             'f1': f1,
             'roc_auc': auc,
             'pr_auc': pr_auc,
+            'brier_score': brier_score,
+            'confusion_matrix': {
+                'tn': int(tn),
+                'fp': int(fp),
+                'fn': int(fn),
+                'tp': int(tp)
+            },
             'num_samples': num_samples,
             'y_true': targets_arr.tolist(),
             'y_pred': preds_arr.tolist(),

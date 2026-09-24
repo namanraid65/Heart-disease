@@ -63,14 +63,20 @@ FEATURE_DISPLAY_NAMES = {
     'ca_3': 'Fluoroscopy: 3 Major Vessels (ca=3)',
     'thal_3': 'Thallium: Normal (thal=3)',
     'thal_6': 'Thallium: Fixed Defect (thal=6)',
-    'thal_7': 'Thallium: Reversible Defect (thal=7)'
+    'thal_7': 'Thallium: Reversible Defect (thal=7)',
+    'bmi': 'Body Mass Index (BMI)',
+    'hba1c': 'Hemoglobin A1c (HbA1c)',
+    'crp': 'C-Reactive Protein (CRP)',
+    'ldl': 'Low-Density Lipoprotein (LDL)',
+    'hdl': 'High-Density Lipoprotein (HDL)'
 }
 
 # Client Definitions
 HOSPITAL_CLIENTS = {
     'hospital_1': 'Hospital 1 (Cleveland)',
     'hospital_2': 'Hospital 2 (Hungarian)',
-    'hospital_3': 'Hospital 3 (Switzerland)'
+    'hospital_3': 'Hospital 3 (Switzerland)',
+    'hospital_4_synthetic': 'Hospital 4 (Extended Biomarkers - Synthetic)'
 }
 
 # Reproducibility & Environment Metadata

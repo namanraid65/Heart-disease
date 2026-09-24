@@ -163,6 +163,44 @@ class TestSimulatedSecureAggregation(unittest.TestCase):
         any_diff = any(not np.allclose(a, c) for a, c in zip(mask_a, mask_c))
         self.assertTrue(any_diff)
 
+    def test_06b_seed_derivation_mathematical_properties(self):
+        """Test 6b: Mathematical symmetry and distinction of SHA-256 pair seeds."""
+        s_12 = PairwiseMaskingProtocol.derive_pair_seed("hospital_1", "hospital_2", round_seed=100)
+        s_21 = PairwiseMaskingProtocol.derive_pair_seed("hospital_2", "hospital_1", round_seed=100)
+        s_13 = PairwiseMaskingProtocol.derive_pair_seed("hospital_1", "hospital_3", round_seed=100)
+        s_12_r2 = PairwiseMaskingProtocol.derive_pair_seed("hospital_1", "hospital_2", round_seed=101)
+
+        # Symmetry: seed(A, B) == seed(B, A)
+        self.assertEqual(s_12, s_21)
+        # Distinct pairs: seed(A, B) != seed(A, C)
+        self.assertNotEqual(s_12, s_13)
+        # Distinct rounds
+        self.assertNotEqual(s_12, s_12_r2)
+
+    def test_06c_cross_process_deterministic_masking(self):
+        """Test 6c: Seed derivation and mask cancellation are deterministic across separate Python processes."""
+        import subprocess
+        # Script running in separate process with distinct PYTHONHASHSEED
+        code = (
+            "import os, sys; from pathlib import Path; "
+            "sys.path.insert(0, str(Path('.').resolve())); "
+            "from federated.heterogeneous.privacy import PairwiseMaskingProtocol; "
+            "print(PairwiseMaskingProtocol.derive_pair_seed('hospital_1', 'hospital_2', 999))"
+        )
+        proc1 = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, cwd=str(PROJECT_ROOT))
+        proc2 = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, cwd=str(PROJECT_ROOT))
+
+        self.assertEqual(proc1.returncode, 0, f"Process 1 failed: {proc1.stderr}")
+        self.assertEqual(proc2.returncode, 0, f"Process 2 failed: {proc2.stderr}")
+
+        val1 = int(proc1.stdout.strip())
+        val2 = int(proc2.stdout.strip())
+        self.assertEqual(val1, val2)
+
+        # Ensure local process matches independent subprocesses
+        local_val = PairwiseMaskingProtocol.derive_pair_seed("hospital_1", "hospital_2", 999)
+        self.assertEqual(local_val, val1)
+
     def test_07_dropout_limitation_documented_and_enforced(self):
         """Test 7: If a client drops out, pairwise masks do NOT cancel (dropout limitation verified)."""
         round_seed = 42

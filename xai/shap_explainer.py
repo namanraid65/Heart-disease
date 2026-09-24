@@ -81,8 +81,9 @@ class DeepLearningShapExplainer:
         sample: (25,) array or (1, 25) array.
         """
         sample_flat = np.asarray(sample, dtype=np.float32).flatten()
-        if len(sample_flat) != NUM_PROCESSED_FEATURES:
-            raise ValueError(f"Expected {NUM_PROCESSED_FEATURES} features, got {len(sample_flat)}")
+        expected_dim = len(self.feature_names)
+        if len(sample_flat) != expected_dim:
+            raise ValueError(f"Expected {expected_dim} features, got {len(sample_flat)}")
         sample_arr = sample_flat.reshape(1, -1)
 
         shap_vals = self.explainer.shap_values(sample_arr, nsamples=nsamples)

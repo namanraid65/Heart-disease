@@ -100,12 +100,15 @@ def run_heterogeneous_simulation(
     experiment_name: Optional[str] = None,
     generate_reports: bool = True,
     seed: int = RANDOM_SEED,
-    encoder_hidden_dims: Optional[List[int]] = None
+    encoder_hidden_dims: Optional[List[int]] = None,
+    client_ids: Optional[List[str]] = None,
+    custom_clients: Optional[Dict[str, HeterogeneousHospitalClient]] = None
 ) -> Dict[str, Any]:
     """
     Executes complete Heterogeneous-Feature Federated Learning simulation for a given strategy.
     Supports Differential Privacy (L2-norm clipping + Gaussian noise) and Simulated Secure Aggregation.
     """
+    active_client_ids = client_ids or list(HETEROGENEOUS_CLIENTS.keys())
     privacy_dict = privacy_config.to_dict() if hasattr(privacy_config, 'to_dict') else (privacy_config or {})
     strategy_obj = create_strategy_instance(
         strategy_type=strategy_type,
@@ -132,7 +135,7 @@ def run_heterogeneous_simulation(
         print(f"   Max Update Norm (C):          {privacy_dict.get('max_update_norm', 1.0)}")
         print(f"   Noise Multiplier (sigma):     {privacy_dict.get('noise_multiplier', 0.0)}")
         print(f"   Target Delta:                 {privacy_dict.get('delta', 1e-5)}")
-    print(f" Participating Hospital Clients: {len(HETEROGENEOUS_CLIENTS)}")
+    print(f" Participating Hospital Clients: {len(active_client_ids)}")
     print(f" Common Latent Dimension Z:      {latent_dim}")
     print(f" Communication Rounds:           {num_rounds}")
     print(f" Local Epochs Per Round:         {local_epochs}")
@@ -147,18 +150,21 @@ def run_heterogeneous_simulation(
 
     # 1. Initialize Hospital Clients & Central Server
     clients: Dict[str, HeterogeneousHospitalClient] = {}
-    for cid in HETEROGENEOUS_CLIENTS:
-        schema = get_client_schema(cid)
-        kwargs = {
-            'client_id': cid,
-            'schema': schema,
-            'latent_dim': latent_dim,
-            'device': DEVICE,
-            'lr': lr
-        }
-        if encoder_hidden_dims is not None:
-            kwargs['encoder_hidden_dims'] = encoder_hidden_dims
-        clients[cid] = HeterogeneousHospitalClient(**kwargs)
+    if custom_clients is not None:
+        clients = custom_clients
+    else:
+        for cid in active_client_ids:
+            schema = get_client_schema(cid)
+            kwargs = {
+                'client_id': cid,
+                'schema': schema,
+                'latent_dim': latent_dim,
+                'device': DEVICE,
+                'lr': lr
+            }
+            if encoder_hidden_dims is not None:
+                kwargs['encoder_hidden_dims'] = encoder_hidden_dims
+            clients[cid] = HeterogeneousHospitalClient(**kwargs)
 
     server = HeterogeneousFederatedServer(
         latent_dim=latent_dim,
@@ -177,14 +183,14 @@ def run_heterogeneous_simulation(
         'privacy_config': privacy_dict,
         'rounds': [],
         'epsilon': [],
-        'client_train_loss': {cid: [] for cid in HETEROGENEOUS_CLIENTS},
-        'client_train_acc': {cid: [] for cid in HETEROGENEOUS_CLIENTS},
-        'client_val_loss': {cid: [] for cid in HETEROGENEOUS_CLIENTS},
-        'client_val_acc': {cid: [] for cid in HETEROGENEOUS_CLIENTS},
-        'client_val_rec': {cid: [] for cid in HETEROGENEOUS_CLIENTS},
-        'client_val_f1': {cid: [] for cid in HETEROGENEOUS_CLIENTS},
-        'client_val_auc': {cid: [] for cid in HETEROGENEOUS_CLIENTS},
-        'client_val_pr_auc': {cid: [] for cid in HETEROGENEOUS_CLIENTS},
+        'client_train_loss': {cid: [] for cid in clients},
+        'client_train_acc': {cid: [] for cid in clients},
+        'client_val_loss': {cid: [] for cid in clients},
+        'client_val_acc': {cid: [] for cid in clients},
+        'client_val_rec': {cid: [] for cid in clients},
+        'client_val_f1': {cid: [] for cid in clients},
+        'client_val_auc': {cid: [] for cid in clients},
+        'client_val_pr_auc': {cid: [] for cid in clients},
         'macro_loss': [],
         'macro_acc': [],
         'macro_prec': [],
@@ -258,7 +264,7 @@ def run_heterogeneous_simulation(
         history['macro_pr_auc'].append(m_met['pr_auc'])
         history['selection_metric_values'].append(curr_score)
 
-        for cid in HETEROGENEOUS_CLIENTS:
+        for cid in clients:
             history['client_val_loss'][cid].append(c_res[cid]['loss'])
             history['client_val_acc'][cid].append(c_res[cid]['accuracy'])
             history['client_val_rec'][cid].append(c_res[cid]['recall'])
@@ -300,10 +306,11 @@ def run_heterogeneous_simulation(
             )
 
         eps_info = f" | eps: {server.epsilon:.2f}" if server.epsilon is not None else ""
+        client_f1_str = ", ".join([f"{cid}: {c_res[cid]['f1']:.3f}" for cid in clients])
         print(
             f"Round [{r:>2}/{num_rounds}] ({elapsed:.1f}s) | "
             f"Val Acc: {m_met['accuracy']*100:.2f}%, F1: {m_met['f1']:.4f}, AUC: {m_met['roc_auc']:.4f}{eps_info} | "
-            f"H1 F1: {c_res['hospital_1']['f1']:.3f}, H2 F1: {c_res['hospital_2']['f1']:.3f}, H3 F1: {c_res['hospital_3']['f1']:.3f}{status_marker}"
+            f"{client_f1_str}{status_marker}"
         )
 
     # 3. Model Selection: Restore Best Checkpoint

@@ -19,6 +19,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from dataclasses import dataclass
 from typing import List, Tuple, Dict, Any, Optional
+import hashlib
 import numpy as np
 
 
@@ -141,7 +142,22 @@ class PairwiseMaskingProtocol:
     """
 
     @staticmethod
+    def derive_pair_seed(cid_a: str, cid_b: str, round_seed: int) -> int:
+        """
+        Derives a deterministic, process-independent 32-bit pseudorandom seed
+        for pair (cid_a, cid_b) using cryptographic SHA-256.
+        Guarantees:
+          derive_pair_seed(A, B, s) == derive_pair_seed(B, A, s)
+          derive_pair_seed(A, B, s) != derive_pair_seed(A, C, s)
+        """
+        pair_key = sorted([str(cid_a), str(cid_b)])
+        key_str = f"secagg_pair::{pair_key[0]}::{pair_key[1]}::{int(round_seed)}"
+        digest = hashlib.sha256(key_str.encode('utf-8')).digest()
+        return int.from_bytes(digest[:4], byteorder='big')
+
+    @classmethod
     def _generate_pair_mask(
+        cls,
         cid_a: str,
         cid_b: str,
         layer_shapes: List[Tuple[int, ...]],
@@ -151,9 +167,7 @@ class PairwiseMaskingProtocol:
         Generates a deterministic pseudorandom mask for the pair (cid_a, cid_b).
         Ordered deterministically so pair (A, B) and (B, A) generate identical masks.
         """
-        pair_key = tuple(sorted([cid_a, cid_b]))
-        # Combine string hash with round seed
-        combined_seed = (hash(pair_key) + round_seed * 31337) & 0xFFFFFFFF
+        combined_seed = cls.derive_pair_seed(cid_a, cid_b, round_seed)
         rng = np.random.RandomState(combined_seed)
 
         mask_layers = []
