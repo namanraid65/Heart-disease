@@ -198,9 +198,12 @@ python predict.py --demo high_risk --legacy-baselines
 ├── evaluation/
 │   ├── generate_final_evaluation.py # Master evaluation suite generator
 │   └── result_loader.py             # Empirical results consolidator
-├── reports/                         # Authoritative markdown tables & figures
+├── reports/                         # Authoritative markdown tables, figures & comprehensive reports
 ├── tests/                           # 111 unit and integration tests (100% passing)
 ├── validate_experiments.py          # Automated 6-stage reproducibility audit
+├── build_full_project_report.py     # End-to-end report generator (Word .docx and PDF)
+├── Project_Report_Federated_Heart_Disease_Prediction.pdf  # Comprehensive Research Project Report (PDF)
+├── Project_Report_Federated_Heart_Disease_Prediction.docx # Comprehensive Research Project Report (Word)
 ├── REPRODUCIBILITY.md               # Complete replication manual
 ├── predict.py                       # Heterogeneous interactive CLI inference tool
 └── requirements.txt                 # Pinned dependencies
@@ -208,8 +211,10 @@ python predict.py --demo high_risk --legacy-baselines
 
 ---
 
-## 📑 Research Questions & Ablation Studies
+## 📑 Research Questions & Project Documentation
 
+* **Comprehensive Project Report (PDF):** [`Project_Report_Federated_Heart_Disease_Prediction.pdf`](Project_Report_Federated_Heart_Disease_Prediction.pdf) (also in [`reports/`](reports/Project_Report_Federated_Heart_Disease_Prediction.pdf) and Word format).
+* **Automated Report Builder:** Run `python build_full_project_report.py` to compile the multi-chapter report with full tables, figure galleries, and PDF export.
 * Detailed formulations of research hypotheses $H_1$ through $H_5$ are documented in [`docs/research_questions.md`](docs/research_questions.md).
 * Systematic parameter sweeps and planned experiment definitions across all 5 experimental dimensions are detailed in [`docs/ablation_matrix.md`](docs/ablation_matrix.md).
 * Reproducibility guarantees, random seed policies, and boundary conditions are detailed in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).

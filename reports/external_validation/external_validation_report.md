@@ -1,6 +1,6 @@
 # External Dataset Validation — UCI Statlog (Heart)
 
-**Evaluation Date:** 2026-09-24 03:23:41 UTC  
+**Evaluation Date:** 2026-09-25 11:05:17 UTC  
 **Evaluation Scope:** True external benchmark evaluation of frozen federated learning and ensemble models  
 **Dataset Name:** UCI Machine Learning Repository — Statlog (Heart)  
 **Official Source URL:** [https://archive.ics.uci.edu/dataset/145/statlog%2Bheart](https://archive.ics.uci.edu/dataset/145/statlog%2Bheart)  
